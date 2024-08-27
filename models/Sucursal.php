@@ -10,9 +10,12 @@ class Sucursal {
         $this->conn = $database->getConnection();
     }
 
-    public function getAll() {
-        $query = "SELECT id, nombre FROM " . $this->table_name . " WHERE status = 'active'";
-        $stmt = $this->conn->query($query);
+    public function findByBodegaId($bodegaId) {
+        $query = "SELECT * FROM sucursal WHERE bodega_id = :bodega_id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":bodega_id", $bodegaId);
+        $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    
 }

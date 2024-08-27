@@ -1,7 +1,16 @@
+<!-- form.php -->
 <div class="card">
     <h2>Formulario de Producto</h2>
+
+    <!-- Verifica si hay un mensaje de éxito -->
+    <?php if (isset($_GET['success']) && $_GET['success'] == 1): ?>
+        <script>
+            alert('Producto guardado con éxito.');
+        </script>
+    <?php endif; ?>
+
     <form action="index.php?action=create" method="POST">
-        <!-- Primera fila: Código y Nombre -->
+        <!-- Código y Nombre -->
         <div class="form-group">
             <label for="codigo">Código</label>
             <input type="text" id="codigo" name="codigo" required>
@@ -12,11 +21,12 @@
             <input type="text" id="nombre" name="nombre" required>
         </div>
 
-        <!-- Segunda fila: Bodega y Sucursal -->
+        <!-- Bodega y Sucursal -->
         <div class="form-group">
             <label for="bodega">Bodega</label>
-            <select id="bodega" name="bodega">
-                <?php foreach($bodegas as $bodega): ?>
+            <select id="bodega" name="bodega" required>
+                <option value="">Seleccione una bodega</option>
+                <?php foreach ($bodegas as $bodega): ?>
                     <option value="<?= $bodega['id'] ?>"><?= $bodega['nombre'] ?></option>
                 <?php endforeach; ?>
             </select>
@@ -24,18 +34,18 @@
 
         <div class="form-group">
             <label for="sucursal">Sucursal</label>
-            <select id="sucursal" name="sucursal">
-                <?php foreach($sucursales as $sucursal): ?>
-                    <option value="<?= $sucursal['id'] ?>"><?= $sucursal['nombre'] ?></option>
-                <?php endforeach; ?>
+            <select id="sucursal" name="sucursal" required>
+                <option value="">Seleccione una sucursal</option>
+                <!-- Las opciones de sucursal se cargarán dinámicamente -->
             </select>
         </div>
 
-        <!-- Tercera fila: Moneda y Precio -->
+        <!-- Moneda y Precio -->
         <div class="form-group">
             <label for="moneda">Moneda</label>
-            <select id="moneda" name="moneda">
-                <?php foreach($monedas as $moneda): ?>
+            <select id="moneda" name="moneda" required>
+                <option value="">Seleccione una moneda</option>
+                <?php foreach ($monedas as $moneda): ?>
                     <option value="<?= $moneda['id'] ?>"><?= $moneda['nombre'] ?></option>
                 <?php endforeach; ?>
             </select>
@@ -43,24 +53,28 @@
 
         <div class="form-group">
             <label for="precio">Precio</label>
-            <input type="number" id="precio" name="precio" required>
+            <input type="number" id="precio" name="precio" step="0.01" required>
         </div>
 
-        <!-- Material del Producto en una fila -->
+        <!-- Material del Producto -->
         <label style="grid-column: span 2;">Material del Producto</label>
         <div class="checkbox-group">
-            <?php foreach($materiales as $material): ?>
-                <input type="checkbox" name="material[]" value="<?= $material['id'] ?>"> <?= $material['nombre'] ?>
-            <?php endforeach; ?>
+            <?php if (isset($materiales) && is_array($materiales)): ?>
+                <?php foreach ($materiales as $material): ?>
+                    <input type="checkbox" name="material[]" value="<?= $material['id'] ?>"> <?= $material['nombre'] ?>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>No hay materiales disponibles.</p>
+            <?php endif; ?>
         </div>
 
-        <!-- Descripción en una fila completa -->
+        <!-- Descripción -->
         <div class="form-group" style="grid-column: span 2;">
             <label for="descripcion">Descripción</label>
-            <textarea id="descripcion" name="descripcion"></textarea>
+            <textarea id="descripcion" name="descripcion" required></textarea>
         </div>
 
-        <!-- Botón de envío en una fila completa -->
+        <!-- Botón de envío -->
         <button type="submit">Guardar Producto</button>
     </form>
 </div>
