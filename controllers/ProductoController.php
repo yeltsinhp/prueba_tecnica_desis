@@ -16,7 +16,6 @@ class ProductoController
 
     public function __construct()
     {
-        // Inicializa los modelos
         $this->productoModel = new Producto();
         $this->bodegaModel = new Bodega();
         $this->sucursalModel = new Sucursal();
@@ -26,8 +25,6 @@ class ProductoController
 
     public function create()
     {
-        $errors = [];
-
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = [
                 'codigo' => trim($_POST['codigo']),
@@ -40,27 +37,15 @@ class ProductoController
                 'descripcion' => trim($_POST['descripcion'])
             ];
 
-            $errors = ProductoValidator::validate($data);
+            $productoId = $this->productoModel->create($data);
 
-            if (empty($errors['codigo']) && $this->productoModel->findByCodigo($data['codigo'])) {
-                $errors['codigo'] = "El código del producto ya existe. Por favor, elige otro.";
+            if ($productoId) {
+                header('Location: index.php?action=create&success=1');
+                exit;
+            } else {
+                header('Location: index.php?action=create&error=general');
+                exit;
             }
-
-            if (empty($errors)) {
-                $productoId = $this->productoModel->create($data);
-
-                if ($productoId) {
-                    header('Location: index.php?action=create&success=1');
-                    exit;
-                } else {
-                    $errors['general'] = "Error al guardar el producto. Por favor, intenta nuevamente.";
-                }
-            }
-
-            $bodegas = $this->bodegaModel->getAll();
-            $monedas = $this->monedaModel->getAll();
-            $materiales = $this->materialModel->getAll();
-            require_once 'views/producto/form.php';
         } else {
             $bodegas = $this->bodegaModel->getAll();
             $monedas = $this->monedaModel->getAll();

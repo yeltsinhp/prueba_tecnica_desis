@@ -15,17 +15,11 @@
         <div class="form-group">
             <label for="codigo">Código</label>
             <input type="text" id="codigo" name="codigo" value="<?= htmlspecialchars($_POST['codigo'] ?? '') ?>">
-            <?php if (!empty($errors['codigo'])): ?>
-                <div class="text-danger"><?= $errors['codigo'] ?></div>
-            <?php endif; ?>
         </div>
 
         <div class="form-group">
             <label for="nombre">Nombre</label>
             <input type="text" id="nombre" name="nombre" value="<?= htmlspecialchars($_POST['nombre'] ?? '') ?>">
-            <?php if (!empty($errors['nombre'])): ?>
-                <div class="text-danger"><?= $errors['nombre'] ?></div>
-            <?php endif; ?>
         </div>
 
         <div class="form-group">
@@ -58,9 +52,6 @@
         <div class="form-group">
             <label for="precio">Precio</label>
             <input type="number" id="precio" name="precio" value="<?= htmlspecialchars($_POST['precio'] ?? '') ?>" step="0.01">
-            <?php if (!empty($errors['precio'])): ?>
-                <div class="text-danger"><?= $errors['precio'] ?></div>
-            <?php endif; ?>
         </div>
 
         <label style="grid-column: span 2;">Material del Producto</label>
@@ -72,17 +63,11 @@
             <?php else: ?>
                 <p>No hay materiales disponibles.</p>
             <?php endif; ?>
-            <?php if (!empty($errors['materiales'])): ?>
-                <div class="text-danger"><?= $errors['materiales'] ?></div>
-            <?php endif; ?>
         </div>
 
         <div class="form-group" style="grid-column: span 2;">
             <label for="descripcion">Descripción</label>
             <textarea id="descripcion" name="descripcion"><?= htmlspecialchars($_POST['descripcion'] ?? '') ?></textarea>
-            <?php if (!empty($errors['descripcion'])): ?>
-                <div class="text-danger"><?= $errors['descripcion'] ?></div>
-            <?php endif; ?>
         </div>
 
         <div class="form-group-button">
