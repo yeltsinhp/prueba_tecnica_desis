@@ -22,7 +22,6 @@ class Producto
 
         $stmt = $this->conn->prepare($query);
 
-        // Asignar los valores pasados desde el controlador
         $stmt->bindParam(":codigo", $data['codigo']);
         $stmt->bindParam(":nombre", $data['nombre']);
         $stmt->bindParam(":bodega_id", $data['bodega_id']);
@@ -34,7 +33,7 @@ class Producto
         if ($stmt->execute()) {
             $this->id = $this->conn->lastInsertId();
             $this->saveMaterials($this->id, $data['materiales']);
-            return $this->id; // Devolver el ID del producto creado
+            return $this->id;
         }
 
         return false;
@@ -77,6 +76,6 @@ class Producto
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":codigo", $codigo);
         $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC); // Devuelve el producto si existe, o false si no
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }

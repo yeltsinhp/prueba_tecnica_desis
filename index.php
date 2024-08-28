@@ -10,6 +10,5 @@ if (method_exists($controller, $action)) {
     echo "Acción no encontrada.";
 }
 
-// Cargar la vista después de ejecutar la acción
 $view = "views/producto/form.php";
 require_once 'views/layout.php';

@@ -1,80 +1,92 @@
-<!-- form.php -->
 <div class="card">
     <h2>Formulario de Producto</h2>
 
-    <!-- Verifica si hay un mensaje de éxito -->
     <?php if (isset($_GET['success']) && $_GET['success'] == 1): ?>
         <script>
             alert('Producto guardado con éxito.');
         </script>
     <?php endif; ?>
 
+    <?php if (!empty($errors['general'])): ?>
+        <div class="text-danger"><?= $errors['general'] ?></div>
+    <?php endif; ?>
+
     <form action="index.php?action=create" method="POST">
-        <!-- Código y Nombre -->
         <div class="form-group">
             <label for="codigo">Código</label>
-            <input type="text" id="codigo" name="codigo" required>
+            <input type="text" id="codigo" name="codigo" value="<?= htmlspecialchars($_POST['codigo'] ?? '') ?>">
+            <?php if (!empty($errors['codigo'])): ?>
+                <div class="text-danger"><?= $errors['codigo'] ?></div>
+            <?php endif; ?>
         </div>
 
         <div class="form-group">
             <label for="nombre">Nombre</label>
-            <input type="text" id="nombre" name="nombre" required>
+            <input type="text" id="nombre" name="nombre" value="<?= htmlspecialchars($_POST['nombre'] ?? '') ?>">
+            <?php if (!empty($errors['nombre'])): ?>
+                <div class="text-danger"><?= $errors['nombre'] ?></div>
+            <?php endif; ?>
         </div>
 
-        <!-- Bodega y Sucursal -->
         <div class="form-group">
             <label for="bodega">Bodega</label>
-            <select id="bodega" name="bodega" required>
+            <select id="bodega" name="bodega">
                 <option value="">Seleccione una bodega</option>
                 <?php foreach ($bodegas as $bodega): ?>
-                    <option value="<?= $bodega['id'] ?>"><?= $bodega['nombre'] ?></option>
+                    <option value="<?= $bodega['id'] ?>" <?= (isset($_POST['bodega']) && $_POST['bodega'] == $bodega['id']) ? 'selected' : '' ?>><?= $bodega['nombre'] ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
 
         <div class="form-group">
             <label for="sucursal">Sucursal</label>
-            <select id="sucursal" name="sucursal" required>
+            <select id="sucursal" name="sucursal" >
                 <option value="">Seleccione una sucursal</option>
-                <!-- Las opciones de sucursal se cargarán dinámicamente -->
             </select>
         </div>
 
-        <!-- Moneda y Precio -->
         <div class="form-group">
             <label for="moneda">Moneda</label>
-            <select id="moneda" name="moneda" required>
+            <select id="moneda" name="moneda" >
                 <option value="">Seleccione una moneda</option>
                 <?php foreach ($monedas as $moneda): ?>
-                    <option value="<?= $moneda['id'] ?>"><?= $moneda['nombre'] ?></option>
+                    <option value="<?= $moneda['id'] ?>" <?= (isset($_POST['moneda']) && $_POST['moneda'] == $moneda['id']) ? 'selected' : '' ?>><?= $moneda['nombre'] ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
 
         <div class="form-group">
             <label for="precio">Precio</label>
-            <input type="number" id="precio" name="precio" step="0.01" required>
+            <input type="number" id="precio" name="precio" value="<?= htmlspecialchars($_POST['precio'] ?? '') ?>" step="0.01">
+            <?php if (!empty($errors['precio'])): ?>
+                <div class="text-danger"><?= $errors['precio'] ?></div>
+            <?php endif; ?>
         </div>
 
-        <!-- Material del Producto -->
         <label style="grid-column: span 2;">Material del Producto</label>
         <div class="checkbox-group">
             <?php if (isset($materiales) && is_array($materiales)): ?>
                 <?php foreach ($materiales as $material): ?>
-                    <input type="checkbox" name="material[]" value="<?= $material['id'] ?>"> <?= $material['nombre'] ?>
+                    <input type="checkbox" name="material[]" value="<?= $material['id'] ?>" <?= (isset($_POST['material']) && in_array($material['id'], $_POST['material'])) ? 'checked' : '' ?>> <?= $material['nombre'] ?>
                 <?php endforeach; ?>
             <?php else: ?>
                 <p>No hay materiales disponibles.</p>
             <?php endif; ?>
+            <?php if (!empty($errors['materiales'])): ?>
+                <div class="text-danger"><?= $errors['materiales'] ?></div>
+            <?php endif; ?>
         </div>
 
-        <!-- Descripción -->
         <div class="form-group" style="grid-column: span 2;">
             <label for="descripcion">Descripción</label>
-            <textarea id="descripcion" name="descripcion" required></textarea>
+            <textarea id="descripcion" name="descripcion"><?= htmlspecialchars($_POST['descripcion'] ?? '') ?></textarea>
+            <?php if (!empty($errors['descripcion'])): ?>
+                <div class="text-danger"><?= $errors['descripcion'] ?></div>
+            <?php endif; ?>
         </div>
 
-        <!-- Botón de envío -->
-        <button type="submit">Guardar Producto</button>
+        <div class="form-group-button">
+            <button type="submit">Guardar Producto</button>
+        </div>
     </form>
 </div>

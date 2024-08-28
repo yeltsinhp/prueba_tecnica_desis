@@ -7,7 +7,7 @@ document.getElementById('bodega').addEventListener('change', function() {
         fetch(`index.php?action=getSucursales&bodega_id=${bodegaId}`)
             .then(response => response.json())
             .then(data => {
-                console.log(data); // Verifica qué datos están siendo recibidos
+                // console.log(data);
                 data.forEach(sucursal => {
                     const option = document.createElement('option');
                     option.value = sucursal.id;
